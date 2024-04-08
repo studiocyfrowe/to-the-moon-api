@@ -11,9 +11,10 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
 ], function ($router) {
-    Route::post('/login', [\App\Http\Controllers\Auth\AuthenticatedUserController::class, 'store']);
+
 });
 
+Route::post('/login', [\App\Http\Controllers\Auth\AuthenticatedUserController::class, 'store']);
 Route::post('/register', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'store']);
 
 Route::group([
@@ -22,6 +23,14 @@ Route::group([
 ], function ($router) {
     Route::get('/dataProfile', [\App\Http\Controllers\UserProfileController::class, 'getDataProfile']);
     Route::post('/logout', [\App\Http\Controllers\UserProfileController::class, 'logout']);
+});
+
+Route::group([
+    'middleware' => 'auth:api',
+    'prefix' => 'user/social'
+], function ($router) {
+    Route::post('/follow/{user}', [\App\Http\Controllers\FollowController::class, 'getFollowUser']);
+    Route::post('/unfollow/{user}', [\App\Http\Controllers\FollowController::class, 'getUnFollowUser']);
 });
 
 Route::group([

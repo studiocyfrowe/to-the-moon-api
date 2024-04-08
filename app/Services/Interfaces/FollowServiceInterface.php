@@ -6,7 +6,7 @@ interface FollowServiceInterface
 {
     public function followUser($followed);
 
-    public function unFollowUser();
+    public function unFollowUser($followed);
 
     public function getFollowingUsers();
 }

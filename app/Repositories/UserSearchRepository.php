@@ -2,12 +2,14 @@
 
 namespace App\Repositories;
 
+use App\Models\User;
 use App\Repositories\Interfaces\UsersSearchRepositoryInterface;
 
 class UserSearchRepository implements UsersSearchRepositoryInterface
 {
     public function searchUserById($userID)
     {
-        // TODO: Implement searchUserById() method.
+        $user = User::where('id', '=', $userID)->first();
+        return $user;
     }
 }

@@ -3,23 +3,38 @@
 namespace App\Services;
 
 use App\Models\Follow;
+use App\Repositories\FollowRepository;
 use App\Services\Interfaces\FollowServiceInterface;
+use App\Traits\GetAuthIdTrait;
 
 class FollowService implements FollowServiceInterface
 {
+    use GetAuthIdTrait;
+    public FollowRepository $followRepository;
+
+    public function __construct(FollowRepository $followRepository)
+    {
+        $this->followRepository = $followRepository;
+    }
+
     public function followUser($followed)
     {
         $follow = new Follow();
 
-        $follow->user_following_id = auth()->user()->id;
+        $follow->user_following_id = $this->getUserId();
         $follow->user_followed_id = $followed->id;
 
         $follow->save();
     }
 
-    public function unFollowUser()
+    public function unFollowUser($followed)
     {
-        // TODO: Implement unFollowUser() method.
+        $getFollow = $this->followRepository->checkIfFollowExists(
+            $this->getUserId(),
+            $followed
+        );
+
+        $getFollow->delete();
     }
 
     public function getFollowingUsers()
