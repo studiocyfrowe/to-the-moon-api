@@ -18,6 +18,18 @@ class FollowRepository implements FollowRepositoryInterface
 
     public function getFollowedUsersBySingleUser($user)
     {
-        // TODO: Implement getFollowedUsersBySingleUser() method.
+        $getFollows = Follow::where('user_following_id', '=', $user->id)
+            ->with('followingsBelongs')
+            ->get();
+
+        return $getFollows;
+    }
+
+    public function getFollowingUsersOfSingleUser($user)
+    {
+        $getFollowings = Follow::where('user_followed_id', '=', $user->id)
+        ->get();
+
+        return $getFollowings;
     }
 }

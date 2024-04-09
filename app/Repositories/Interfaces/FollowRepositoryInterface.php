@@ -7,4 +7,6 @@ interface FollowRepositoryInterface
     public function checkIfFollowExists($following, $followed);
 
     public function getFollowedUsersBySingleUser($user);
+
+    public function getFollowingUsersOfSingleUser($user);
 }

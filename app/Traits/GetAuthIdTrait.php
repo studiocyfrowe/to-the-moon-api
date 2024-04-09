@@ -6,7 +6,7 @@ trait GetAuthIdTrait
 {
     public function getUserId()
     {
-        return auth()->user()->id;
+        return auth()->user();
     }
 
 }

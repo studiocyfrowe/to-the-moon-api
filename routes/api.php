@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 
-Route::group([
-    'middleware' => 'api',
-    'prefix' => 'auth'
-], function ($router) {
-
-});
+//Route::group([
+//    'middleware' => 'api',
+//    'prefix' => 'auth'
+//], function ($router) {
+//
+//});
 
 Route::post('/login', [\App\Http\Controllers\Auth\AuthenticatedUserController::class, 'store']);
 Route::post('/register', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'store']);
@@ -22,6 +22,8 @@ Route::group([
     'prefix' => 'user'
 ], function ($router) {
     Route::get('/dataProfile', [\App\Http\Controllers\UserProfileController::class, 'getDataProfile']);
+    Route::get('/followed', [\App\Http\Controllers\UserProfileController::class, 'getFollowedUsersByAuthUser']);
+    Route::get('/following', [\App\Http\Controllers\UserProfileController::class, 'getFollowingUsersByAuthUser']);
     Route::post('/logout', [\App\Http\Controllers\UserProfileController::class, 'logout']);
 });
 

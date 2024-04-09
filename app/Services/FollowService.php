@@ -37,8 +37,15 @@ class FollowService implements FollowServiceInterface
         $getFollow->delete();
     }
 
-    public function getFollowingUsers()
+    public function getFollowedUsers($user)
     {
-        // TODO: Implement getFollowingUsers() method.
+        $getFollowed = $this->followRepository->getFollowedUsersBySingleUser($user);
+        return $getFollowed;
+    }
+
+    public function getFollowingUsers($user)
+    {
+        $getFollowings = $this->followRepository->getFollowingUsersOfSingleUser($this->getUserId());
+        return $getFollowings;
     }
 }
