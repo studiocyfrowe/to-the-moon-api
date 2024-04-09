@@ -24,7 +24,18 @@ Route::group([
     Route::get('/dataProfile', [\App\Http\Controllers\UserProfileController::class, 'getDataProfile']);
     Route::get('/followed', [\App\Http\Controllers\UserProfileController::class, 'getFollowedUsersByAuthUser']);
     Route::get('/following', [\App\Http\Controllers\UserProfileController::class, 'getFollowingUsersByAuthUser']);
-    Route::post('/logout', [\App\Http\Controllers\UserProfileController::class, 'logout']);
+    Route::post('/logout', [\App\Http\Controllers\Auth\AuthenticatedUserController::class, 'logout']);
+    Route::post('/update/details', [\App\Http\Controllers\UserProfileController::class, 'updateUserDetails']);
+});
+
+Route::group([
+    'middleware' => 'auth:api',
+    'prefix' => 'posts'
+], function ($router) {
+    Route::get('/statuses', [\App\Http\Controllers\PostStatusController::class, 'index']);
+    Route::post('/status/new', [\App\Http\Controllers\PostStatusController::class, 'store']);
+    Route::get('/getAll', [\App\Http\Controllers\PostController::class, 'indexOfUser']);
+    Route::post('/new', [\App\Http\Controllers\PostController::class, 'store']);
 });
 
 Route::group([

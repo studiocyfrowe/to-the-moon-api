@@ -2,10 +2,8 @@
 
 namespace App\Repositories\Interfaces;
 
-interface UserPostsRepositoryInterface
+interface ActionPostsRepositoryInterface
 {
-    public function getPostsOfUser();
-
     public function storePostByUser($data, $post_status);
 
     public function editPostByUser($data, $post);

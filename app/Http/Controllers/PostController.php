@@ -5,17 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
-use App\Repositories\UserPostsRepository;
+use App\Repositories\ActionPostsRepository;
+use App\Repositories\GetPostsRepository;
 use App\Traits\ResponseDataTrait;
 
 class PostController extends Controller
 {
     use ResponseDataTrait;
-    public UserPostsRepository $userPostsRepository;
+    public GetPostsRepository $getPostsRepository;
 
-    public function __construct(UserPostsRepository $userPostsRepository)
+    public function __construct(GetPostsRepository $getPostsRepository)
     {
-        $this->userPostsRepository = $userPostsRepository;
+        $this->getPostsRepository = $getPostsRepository;
     }
 
     /**
@@ -23,7 +24,7 @@ class PostController extends Controller
      */
     public function indexOfUser()
     {
-        $res = $this->userPostsRepository->getPostsOfUser();
+        $res = $this->getPostsRepository->getAllOfAuthUser();
         return $res ? $this->getData($res) : null;
     }
 

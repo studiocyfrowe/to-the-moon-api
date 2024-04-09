@@ -7,29 +7,34 @@ use App\Repositories\Interfaces\FollowRepositoryInterface;
 
 class FollowRepository implements FollowRepositoryInterface
 {
-    public function checkIfFollowExists($following, $followed)
+    public function checkIfFollowExists($followed)
     {
-        $getFollow = Follow::where('user_following_id', '=', auth()->user()->id)
+        return Follow::where('user_following_id', '=', auth()->user()->id)
             ->where('user_followed_id', '=', $followed->id)
-            ->first();
-
-        return $getFollow;
+            ->exists();
     }
 
     public function getFollowedUsersBySingleUser($user)
     {
-        $getFollows = Follow::where('user_following_id', '=', $user->id)
-            ->with('followingsBelongs')
+        return Follow::where('user_following_id', '=', $user->id)
+            ->with('followedBelongs')
             ->get();
-
-        return $getFollows;
     }
 
     public function getFollowingUsersOfSingleUser($user)
     {
-        $getFollowings = Follow::where('user_followed_id', '=', $user->id)
-        ->get();
+        return Follow::where('user_followed_id', '=', $user->id)
+            ->with('followingBelongs')
+            ->get();
+    }
 
-        return $getFollowings;
+    public function followUser($authUser, $user)
+    {
+        $follow = new Follow();
+
+        $follow->user_following_id = $authUser->id;
+        $follow->user_followed_id = $user->id;
+
+        $follow->save();
     }
 }

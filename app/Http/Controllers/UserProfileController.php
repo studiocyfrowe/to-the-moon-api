@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUserDetailsRequest;
+use App\Models\User;
 use App\Services\FollowService;
 use App\Traits\GetAuthIdTrait;
 use App\Traits\ResponseDataTrait;
@@ -25,12 +27,6 @@ class UserProfileController extends Controller
         return response()->json(auth()->user(), 200);
     }
 
-    public function logout() : \Illuminate\Http\JsonResponse
-    {
-        auth()->logout(true);
-        return $this->getMessage();
-    }
-
     public function getFollowedUsersByAuthUser()
     {
         $res = $this->followService->getFollowedUsers($this->getUserId());
@@ -43,5 +39,18 @@ class UserProfileController extends Controller
         $res = $this->followService->getFollowingUsers($this->getUserId());
         $count_users = count($res);
         return $this->getFollows($count_users, $res);
+    }
+
+    public function updateUserDetails(UpdateUserDetailsRequest $request)
+    {
+        $getDetailsMe = User::where('id', '=', $this->getUserId()->id)->first();
+
+        $getDetailsMe->first_name = $request->first_name;
+        $getDetailsMe->last_name = $request->last_name;
+        $getDetailsMe->save();
+
+        return response()->json([
+            'status' => 'User has been updated!'
+        ], 200);
     }
 }

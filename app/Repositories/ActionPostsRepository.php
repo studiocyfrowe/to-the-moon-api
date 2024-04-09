@@ -3,21 +3,10 @@
 namespace App\Repositories;
 
 use App\Models\Post;
-use App\Repositories\Interfaces\UserPostsRepositoryInterface;
+use App\Repositories\Interfaces\ActionPostsRepositoryInterface;
 
-class UserPostsRepository implements UserPostsRepositoryInterface
+class ActionPostsRepository implements ActionPostsRepositoryInterface
 {
-    public function getPostsOfUser()
-    {
-        $res = Post::where('user_id', '=', auth()->user()->id)
-            ->with([
-                'user', 'post_status'
-            ])
-            ->get();
-
-        return $res;
-    }
-
     public function storePostByUser($data, $post_status)
     {
         $post = new Post();

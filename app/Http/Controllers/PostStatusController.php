@@ -5,23 +5,26 @@ namespace App\Http\Controllers;
 use App\Models\PostStatus;
 use App\Http\Requests\StorePostStatusRequest;
 use App\Http\Requests\UpdatePostStatusRequest;
+use App\Repositories\PostStatusRepository;
+use App\Traits\ResponseDataTrait;
 
 class PostStatusController extends Controller
 {
+    use ResponseDataTrait;
+    public PostStatusRepository $postStatusRepository;
+
+    public function __construct(PostStatusRepository $postStatusRepository)
+    {
+        $this->postStatusRepository = $postStatusRepository;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $res = $this->postStatusRepository->getAll();
+        return response()->json($res, 200);
     }
 
     /**
@@ -29,7 +32,12 @@ class PostStatusController extends Controller
      */
     public function store(StorePostStatusRequest $request)
     {
-        //
+        $postStatus = new PostStatus();
+
+        $postStatus->name = $request->name;
+        $postStatus->save();
+
+        return $this->getData($postStatus);
     }
 
     /**
@@ -37,15 +45,8 @@ class PostStatusController extends Controller
      */
     public function show(PostStatus $postStatus)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(PostStatus $postStatus)
-    {
-        //
+        $postStatus = PostStatus::where('id', '=', $postStatus->id)->first();
+        return $this->getData($postStatus, 200);
     }
 
     /**
@@ -53,7 +54,14 @@ class PostStatusController extends Controller
      */
     public function update(UpdatePostStatusRequest $request, PostStatus $postStatus)
     {
-        //
+        $postStatus = PostStatus::where('id', '=', $postStatus->id)->first();
+
+        $postStatus->name = $request->name;
+        $postStatus->save();
+
+        return response()->json([
+            'status' => 'Post Status has been updated!'
+        ], 200);
     }
 
     /**
@@ -61,6 +69,6 @@ class PostStatusController extends Controller
      */
     public function destroy(PostStatus $postStatus)
     {
-        //
+        $this->postStatusRepository->removeItem($postStatus);
     }
 }

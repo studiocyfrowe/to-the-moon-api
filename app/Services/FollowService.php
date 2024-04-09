@@ -6,6 +6,7 @@ use App\Models\Follow;
 use App\Repositories\FollowRepository;
 use App\Services\Interfaces\FollowServiceInterface;
 use App\Traits\GetAuthIdTrait;
+use Illuminate\Http\JsonResponse;
 
 class FollowService implements FollowServiceInterface
 {
@@ -19,18 +20,13 @@ class FollowService implements FollowServiceInterface
 
     public function followUser($followed)
     {
-        $follow = new Follow();
-
-        $follow->user_following_id = $this->getUserId();
-        $follow->user_followed_id = $followed->id;
-
-        $follow->save();
+        $this->followRepository->followUser($this->getUserId(), $followed);
     }
 
     public function unFollowUser($followed)
     {
         $getFollow = $this->followRepository->checkIfFollowExists(
-            $this->getUserId(),
+            $this->getUserId()->id,
             $followed
         );
 

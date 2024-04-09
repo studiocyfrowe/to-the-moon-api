@@ -9,7 +9,6 @@ class UserSearchRepository implements UsersSearchRepositoryInterface
 {
     public function searchUserById($userID)
     {
-        $user = User::where('id', '=', $userID)->first();
-        return $user;
+        return User::where('id', '=', $userID->id)->exists();
     }
 }
