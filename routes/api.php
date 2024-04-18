@@ -30,11 +30,21 @@ Route::group([
 
 Route::group([
     'middleware' => 'auth:api',
+    'prefix' => 'user/place'
+], function ($router) {
+    Route::post('/set', [\App\Http\Controllers\UserLocationController::class, 'create']);
+});
+
+Route::group([
+    'middleware' => 'auth:api',
     'prefix' => 'posts'
 ], function ($router) {
     Route::get('/statuses', [\App\Http\Controllers\PostStatusController::class, 'index']);
     Route::post('/status/new', [\App\Http\Controllers\PostStatusController::class, 'store']);
+    Route::post('/update/{post}', [\App\Http\Controllers\PostController::class, 'update']);
     Route::get('/getAll', [\App\Http\Controllers\PostController::class, 'indexOfUser']);
+    Route::post('/details/{post}', [\App\Http\Controllers\PostController::class, 'show']);
+    Route::get('/change/status/{post}/{status}', [\App\Http\Controllers\PostController::class, 'changeStatus']);
     Route::post('/new', [\App\Http\Controllers\PostController::class, 'store']);
 });
 

@@ -15,13 +15,8 @@ class PostStatusRepository implements PostStatusRepositoryInterface
     public function storeItem($data)
     {
         $postStatus = new PostStatus();
-        $postStatus->name = $data->name;
+        $postStatus->name = $data;
         $postStatus->save();
-    }
-
-    public function editItem($data)
-    {
-        // TODO: Implement editItem() method.
     }
 
     public function removeItem($postStatus)

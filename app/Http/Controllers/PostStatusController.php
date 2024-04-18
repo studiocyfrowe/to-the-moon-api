@@ -6,16 +6,19 @@ use App\Models\PostStatus;
 use App\Http\Requests\StorePostStatusRequest;
 use App\Http\Requests\UpdatePostStatusRequest;
 use App\Repositories\PostStatusRepository;
+use App\Services\PostStatusService;
 use App\Traits\ResponseDataTrait;
 
 class PostStatusController extends Controller
 {
     use ResponseDataTrait;
     public PostStatusRepository $postStatusRepository;
+    public PostStatusService $postStatusService;
 
-    public function __construct(PostStatusRepository $postStatusRepository)
+    public function __construct(PostStatusRepository $postStatusRepository, PostStatusService $postStatusService)
     {
         $this->postStatusRepository = $postStatusRepository;
+        $this->postStatusService = $postStatusService;
     }
 
     /**
@@ -30,14 +33,9 @@ class PostStatusController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePostStatusRequest $request)
+    public function store()
     {
-        $postStatus = new PostStatus();
-
-        $postStatus->name = $request->name;
-        $postStatus->save();
-
-        return $this->getData($postStatus);
+        $this->postStatusService->createPostStatus();
     }
 
     /**
@@ -47,21 +45,6 @@ class PostStatusController extends Controller
     {
         $postStatus = PostStatus::where('id', '=', $postStatus->id)->first();
         return $this->getData($postStatus, 200);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatePostStatusRequest $request, PostStatus $postStatus)
-    {
-        $postStatus = PostStatus::where('id', '=', $postStatus->id)->first();
-
-        $postStatus->name = $request->name;
-        $postStatus->save();
-
-        return response()->json([
-            'status' => 'Post Status has been updated!'
-        ], 200);
     }
 
     /**

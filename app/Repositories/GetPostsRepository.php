@@ -13,7 +13,7 @@ class GetPostsRepository implements GetPostsRepositoryInterface
     {
         return Post::where('user_id', '=', $this->getUserId()->id)
             ->with([
-                'user', 'post_status'
+                'user', 'postStatus'
             ])->get();
     }
 
@@ -24,6 +24,9 @@ class GetPostsRepository implements GetPostsRepositoryInterface
 
     public function getPostDetails($post)
     {
-        // TODO: Implement getPostDetails() method.
+        return Post::where('id', '=', $post->id)
+            ->with([
+                'user', 'postStatus'
+            ])->first();
     }
 }

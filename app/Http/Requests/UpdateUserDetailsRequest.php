@@ -23,7 +23,8 @@ class UpdateUserDetailsRequest extends FormRequest
     {
         return [
             'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255']
+            'last_name' => ['required', 'string', 'max:255'],
+            'image_profile_url' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048']
         ];
     }
 }

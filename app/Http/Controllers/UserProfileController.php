@@ -47,6 +47,10 @@ class UserProfileController extends Controller
 
         $getDetailsMe->first_name = $request->first_name;
         $getDetailsMe->last_name = $request->last_name;
+
+        $imageName = time().'.'.$request->image_profile_url->extension();
+        $getDetailsMe->image_profile_url = $request->image_profile_url->move(public_path('images'), $imageName);
+
         $getDetailsMe->save();
 
         return response()->json([

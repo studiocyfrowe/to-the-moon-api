@@ -29,6 +29,6 @@ class ActionPostsRepository implements ActionPostsRepositoryInterface
 
     public function removePostOfUser($post)
     {
-        // TODO: Implement removePostOfUser() method.
+        $post->delete();
     }
 }

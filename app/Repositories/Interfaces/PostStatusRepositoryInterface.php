@@ -8,7 +8,5 @@ interface PostStatusRepositoryInterface
 
     public function storeItem($data);
 
-    public function editItem($data);
-
     public function removeItem($postStatus);
 }
