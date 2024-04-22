@@ -8,6 +8,5 @@ enum PostStatusEnum : string
 {
     case PUBLISHED = 'PUBLISHED';
     case DRAFT = 'DRAFT';
-
     case HIDDEN = 'HIDDEN';
 }

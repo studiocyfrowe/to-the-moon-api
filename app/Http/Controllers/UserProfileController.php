@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\ResponseStatusEnum;
 use App\Http\Requests\UpdateUserDetailsRequest;
 use App\Models\User;
+use App\Repositories\RegisteredUserRepository;
 use App\Services\FollowService;
 use App\Traits\GetAuthIdTrait;
+use App\Traits\GetMessageTrait;
 use App\Traits\ResponseDataTrait;
 use App\Traits\ResponseFollowDataTrait;
 use App\Traits\ResponseStatusTrait;
@@ -14,20 +17,22 @@ use Illuminate\Support\Facades\Auth;
 
 class UserProfileController extends Controller
 {
-    use ResponseStatusTrait, ResponseDataTrait, GetAuthIdTrait, ResponseFollowDataTrait;
+    use ResponseStatusTrait, ResponseDataTrait, GetAuthIdTrait, ResponseFollowDataTrait, GetMessageTrait;
     public FollowService $followService;
+    public RegisteredUserRepository $registeredUserRepository;
 
-    public function __construct(FollowService $followService)
+    public function __construct(FollowService $followService, RegisteredUserRepository $registeredUserRepository)
     {
         $this->followService = $followService;
+        $this->registeredUserRepository = $registeredUserRepository;
     }
 
     public function getDataProfile(): \Illuminate\Http\JsonResponse
     {
-        return response()->json(auth()->user(), 200);
+        return $this->getData(auth()->user());
     }
 
-    public function getFollowedUsersByAuthUser()
+    public function getFollowedUsersByAuthUser() : JsonResponse
     {
         $res = $this->followService->getFollowedUsers($this->getUserId());
         $count_users = count($res);
@@ -43,18 +48,12 @@ class UserProfileController extends Controller
 
     public function updateUserDetails(UpdateUserDetailsRequest $request)
     {
-        $getDetailsMe = User::where('id', '=', $this->getUserId()->id)->first();
+        $authUser = $this->getUserId();
+        $getDetailsMe = User::where('id', '=', $authUser->id)->first();
 
-        $getDetailsMe->first_name = $request->first_name;
-        $getDetailsMe->last_name = $request->last_name;
+        $this->registeredUserRepository->updateUser($getDetailsMe, $request);
 
-        $imageName = time().'.'.$request->image_profile_url->extension();
-        $getDetailsMe->image_profile_url = $request->image_profile_url->move(public_path('images'), $imageName);
-
-        $getDetailsMe->save();
-
-        return response()->json([
-            'status' => 'User has been updated!'
-        ], 200);
+        $this->responseMessage('User has been updated!',
+            ResponseStatusEnum::SUCCESS);
     }
 }

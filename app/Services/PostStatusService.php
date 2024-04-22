@@ -14,7 +14,8 @@ class PostStatusService implements PostStatusServiceInterface
     public PostStatusRepository $postStatusRepository;
     public GetPostsRepository $getPostsRepository;
 
-    public function __construct(PostStatusRepository $postStatusRepository, GetPostsRepository $getPostsRepository)
+    public function __construct(PostStatusRepository $postStatusRepository,
+                                GetPostsRepository $getPostsRepository)
     {
         $this->postStatusRepository = $postStatusRepository;
         $this->getPostsRepository = $getPostsRepository;
