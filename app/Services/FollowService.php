@@ -25,10 +25,7 @@ class FollowService implements FollowServiceInterface
 
     public function unFollowUser($followed)
     {
-        $getFollow = $this->followRepository->checkIfFollowExists(
-            $this->getUserId()->id,
-            $followed
-        );
+        $getFollow = $this->followRepository->checkIfFollowExists($followed);
 
         $getFollow->delete();
     }

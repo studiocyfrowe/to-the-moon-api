@@ -11,7 +11,7 @@ class FollowRepository implements FollowRepositoryInterface
     {
         return Follow::where('user_following_id', '=', auth()->user()->id)
             ->where('user_followed_id', '=', $followed->id)
-            ->exists();
+            ->first();
     }
 
     public function getFollowedUsersBySingleUser($user)

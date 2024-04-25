@@ -14,6 +14,7 @@ class RegisteredUserRepository implements RegisteredUserRepositoryInterface
 
         $user->first_name = $data->first_name;
         $user->last_name = $data->last_name;
+        $user->nickname = $data->nickname;
         $user->email = $data->email;
         $user->password = bcrypt($data->password);
 

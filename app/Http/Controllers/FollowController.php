@@ -48,7 +48,7 @@ class FollowController extends Controller
 
     public function getUnFollowUser(User $user)
     {
-        $followed = $this->userSearchRepository->searchUserById($user->id);
+        $followed = $this->userSearchRepository->searchUserById($user);
         if ($followed) {
             $this->followService->unFollowUser($followed);
         } else {
