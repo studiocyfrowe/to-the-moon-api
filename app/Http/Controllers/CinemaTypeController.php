@@ -43,7 +43,8 @@ class CinemaTypeController extends Controller
      */
     public function show(CinemaType $cinemaType)
     {
-        //
+        $res = $this->cinemaTypeRepository->getSingle($cinemaType->id);
+        return $res ? response()->json($res, 200) : null;
     }
 
     /**

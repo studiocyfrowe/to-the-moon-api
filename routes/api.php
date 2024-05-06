@@ -19,6 +19,13 @@ Route::post('/register', [\App\Http\Controllers\Auth\RegisteredUserController::c
 
 Route::group([
     'middleware' => 'auth:api',
+    'prefix' => 'users'
+], function ($router) {
+    Route::get('/search', [\App\Http\Controllers\UserController::class, 'searchUser']);
+});
+
+Route::group([
+    'middleware' => 'auth:api',
     'prefix' => 'user'
 ], function ($router) {
     Route::get('/dataProfile', [\App\Http\Controllers\UserProfileController::class, 'getDataProfile']);
