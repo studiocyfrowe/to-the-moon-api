@@ -5,23 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\City;
 use App\Http\Requests\StoreCityRequest;
 use App\Http\Requests\UpdateCityRequest;
+use App\Repositories\CityRepository;
 
 class CityController extends Controller
 {
+    public CityRepository $cityRepository;
+
+    public function __construct(CityRepository $cityRepository)
+    {
+        $this->cityRepository = $cityRepository;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return $this->cityRepository->index();
     }
 
     /**
@@ -29,7 +29,7 @@ class CityController extends Controller
      */
     public function store(StoreCityRequest $request)
     {
-        //
+        $this->cityRepository->store($request);
     }
 
     /**

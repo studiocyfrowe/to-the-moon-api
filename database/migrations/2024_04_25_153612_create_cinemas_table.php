@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('cinemas', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->text('description');
+            $table->integer('city_id');
+            $table->integer('cinema_type_id');
             $table->timestamps();
         });
     }

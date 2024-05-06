@@ -49,6 +49,21 @@ Route::group([
 });
 
 Route::group([
+//    'middleware' => 'auth:api',
+    'prefix' => 'cinemas'
+], function ($router) {
+    Route::get('/getAll',  [\App\Http\Controllers\CinemaController::class, 'index']);
+});
+
+Route::group([
+//    'middleware' => 'auth:api',
+    'prefix' => 'cinema/types'
+], function ($router) {
+    Route::get('/getAll',  [\App\Http\Controllers\CinemaTypeController::class, 'index']);
+    Route::post('/store', [\App\Http\Controllers\CinemaTypeController::class, 'store']);
+});
+
+Route::group([
     'middleware' => 'auth:api',
     'prefix' => 'user/social'
 ], function ($router) {
