@@ -5,15 +5,15 @@ namespace App\Repositories;
 use App\Models\User;
 use App\Repositories\Interfaces\UsersSearchRepositoryInterface;
 
-class UserSearchRepository implements UsersSearchRepositoryInterface
+class UserSearchRepository extends BaseRepository
 {
-    public function checkUserExists($user)
+    public function checkIfExists($data)
     {
-        return User::where('nickname', '=', $user)->exists();
+        return User::where('nickname', '=', $data)->exists();
     }
 
-    public function searchUserByUniqueNickname($user)
+    public function searchData($data)
     {
-        return User::where('nickname', '=', $user)->first();
+        return User::where('nickname', '=', $data)->first();
     }
 }

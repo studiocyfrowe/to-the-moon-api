@@ -5,16 +5,21 @@ namespace App\Repositories;
 use App\Models\CinemaType;
 use App\Repositories\Interfaces\CinemaTypeRepositoryInterface;
 
-class CinemaTypeRepository implements CinemaTypeRepositoryInterface
+class CinemaTypeRepository extends BaseRepository implements CinemaTypeRepositoryInterface
 {
+    public function checkIfExists($data)
+    {
+        return CinemaType::where('id', '=', $data)->exists();
+    }
+
+    public function searchData($data)
+    {
+        return CinemaType::where('id', '=', $data)->with('cinemas')->first();
+    }
+
     public function getAll()
     {
         return CinemaType::with('cinemas')->get();
-    }
-
-    public function getSingle($cinemaType)
-    {
-        return CinemaType::where('id', '=', $cinemaType)->with('cinemas')->get();
     }
 
     public function create($data)
@@ -27,10 +32,5 @@ class CinemaTypeRepository implements CinemaTypeRepositoryInterface
     public function edit($cinemaType, $data)
     {
         // TODO: Implement edit() method.
-    }
-
-    public function delete($cinemaType)
-    {
-        //
     }
 }

@@ -67,7 +67,9 @@ Route::group([
     'prefix' => 'cinema/types'
 ], function ($router) {
     Route::get('/getAll',  [\App\Http\Controllers\CinemaTypeController::class, 'index']);
+    Route::get('/single/{cinemaType}',  [\App\Http\Controllers\CinemaTypeController::class, 'show']);
     Route::post('/store', [\App\Http\Controllers\CinemaTypeController::class, 'store']);
+    Route::delete('/remove/{cinemaType}', [\App\Http\Controllers\CinemaTypeController::class, 'destroy']);
 });
 
 Route::group([

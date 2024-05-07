@@ -8,4 +8,5 @@ enum ResponseMessagesEnum : string
     case ERROR = 'ERROR';
     case NOT_FOUND = 'NOT FOUND';
     case EMPTY = 'EMPTY';
+    case REQUIRED_PARAM = 'REQUIRED PARAM';
 }

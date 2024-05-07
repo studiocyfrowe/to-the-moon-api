@@ -2,16 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\ResponseMessagesEnum;
+use App\Enum\ResponseStatusEnum;
 use App\Models\CinemaType;
 use App\Http\Requests\StoreCinemaTypeRequest;
 use App\Http\Requests\UpdateCinemaTypeRequest;
 use App\Repositories\CinemaTypeRepository;
 use App\Services\CinemaTypeService;
+use App\Traits\GetMessageTrait;
+use App\Traits\ResponseDataTrait;
 
 class CinemaTypeController extends Controller
 {
-    public CinemaTypeRepository $cinemaTypeRepository;
-    public CinemaTypeService $cinemaTypeService;
+    use GetMessageTrait;
+    use ResponseDataTrait;
+    protected CinemaTypeRepository $cinemaTypeRepository;
+    protected CinemaTypeService $cinemaTypeService;
 
     public function __construct(CinemaTypeRepository $cinemaTypeRepository,
     CinemaTypeService $cinemaTypeService)
@@ -26,7 +32,7 @@ class CinemaTypeController extends Controller
     public function index()
     {
         $res = $this->cinemaTypeRepository->getAll();
-        return $res ? response()->json($res, 200) : null;
+        return $this->getData($res);
     }
 
 
@@ -43,8 +49,14 @@ class CinemaTypeController extends Controller
      */
     public function show(CinemaType $cinemaType)
     {
-        $res = $this->cinemaTypeRepository->getSingle($cinemaType->id);
-        return $res ? response()->json($res, 200) : null;
+        if ($this->cinemaTypeRepository->checkIfExists($cinemaType->id)) {
+            $res = $this->cinemaTypeRepository->searchData($cinemaType->id);
+            return $res ? $this->getData($res) : $this->responseMessage(ResponseMessagesEnum::ERROR,
+                ResponseStatusEnum::BAD_REQUEST);
+        } else {
+            return $this->responseMessage(ResponseMessagesEnum::NOT_FOUND,
+                ResponseStatusEnum::NOT_FOUND);
+        }
     }
 
     /**
@@ -60,6 +72,12 @@ class CinemaTypeController extends Controller
      */
     public function destroy(CinemaType $cinemaType)
     {
-        //
+        if ($this->cinemaTypeRepository->checkIfExists($cinemaType->id)) {
+            $res = $this->cinemaTypeRepository->searchData($cinemaType->id);
+            $res->delete();
+        } else {
+            return $this->responseMessage(ResponseMessagesEnum::NOT_FOUND,
+                ResponseStatusEnum::NOT_FOUND);
+        }
     }
 }
