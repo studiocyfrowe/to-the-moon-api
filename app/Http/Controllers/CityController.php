@@ -2,20 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\ResponseMessagesEnum;
+use App\Enum\ResponseStatusEnum;
 use App\Models\City;
 use App\Http\Requests\StoreCityRequest;
 use App\Http\Requests\UpdateCityRequest;
 use App\Repositories\CityRepository;
-use App\Services\GetCityCoordinatesService;
+use App\Services\GetCoordinatesService;
+use App\Traits\GetMessageTrait;
+use App\Traits\ResponseDataTrait;
 use Illuminate\Support\Facades\Http;
 
 class CityController extends Controller
 {
+    use GetMessageTrait;
+    use ResponseDataTrait;
     protected CityRepository $cityRepository;
-    protected GetCityCoordinatesService $cityCoordinatesService;
+    protected GetCoordinatesService $cityCoordinatesService;
 
-    public function __construct(CityRepository $cityRepository,
-                                GetCityCoordinatesService $cityCoordinatesService)
+    public function __construct(CityRepository        $cityRepository,
+                                GetCoordinatesService $cityCoordinatesService)
     {
         $this->cityRepository = $cityRepository;
         $this->cityCoordinatesService = $cityCoordinatesService;
@@ -26,7 +32,8 @@ class CityController extends Controller
      */
     public function index()
     {
-        return $this->cityRepository->index();
+        $res = $this->cityRepository->index();
+        return $this->getData($res);
     }
 
     /**
@@ -44,7 +51,14 @@ class CityController extends Controller
      */
     public function show(City $city)
     {
-        //
+        if ($this->cityRepository->checkIfExists($city->id)) {
+            $res = $this->cityRepository->searchData($city->id);
+            return $res ? $this->getData($res) : $this->responseMessage(ResponseMessagesEnum::ERROR,
+                ResponseStatusEnum::BAD_REQUEST);
+        } else {
+            return $this->responseMessage(ResponseMessagesEnum::NOT_FOUND,
+                ResponseStatusEnum::NOT_FOUND);
+        }
     }
 
     /**
@@ -52,7 +66,13 @@ class CityController extends Controller
      */
     public function update(UpdateCityRequest $request, City $city)
     {
-        //
+        if ($this->cityRepository->checkIfExists($city->id)) {
+            $cityItem = $this->cityRepository->searchData($city->id);
+            $this->cityRepository->update($cityItem, $request);
+        } else {
+            return $this->responseMessage(ResponseMessagesEnum::NOT_FOUND,
+                ResponseStatusEnum::NOT_FOUND);
+        }
     }
 
     /**
@@ -60,6 +80,12 @@ class CityController extends Controller
      */
     public function destroy(City $city)
     {
-        //
+        if ($this->cityRepository->checkIfExists($city->id)) {
+            $res = $this->cityRepository->searchData($city->id);
+            $res->delete();
+        } else {
+            return $this->responseMessage(ResponseMessagesEnum::NOT_FOUND,
+                ResponseStatusEnum::NOT_FOUND);
+        }
     }
 }

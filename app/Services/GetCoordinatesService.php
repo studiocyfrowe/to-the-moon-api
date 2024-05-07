@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
-use App\Services\Interfaces\GetCityCoordinatesServiceInterface;
+use App\Services\Interfaces\GetCoordinatesServiceInterface;
 use App\Traits\ResponseDataTrait;
 use Illuminate\Support\Facades\Http;
 
-class GetCityCoordinatesService implements GetCityCoordinatesServiceInterface
+class GetCoordinatesService implements GetCoordinatesServiceInterface
 {
     use ResponseDataTrait;
     public function index($query)

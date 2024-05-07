@@ -9,12 +9,12 @@ class CityRepository extends BaseRepository implements CityRepositoryInterface
 {
     public function checkIfExists($data)
     {
-        // TODO: Implement checkIfExists() method.
+        return City::where('id', '=', $data)->exists();
     }
 
     public function searchData($data)
     {
-        // TODO: Implement searchData() method.
+        return City::where('id', '=', $data)->with('cinemas')->first();
     }
 
     public function index()
@@ -36,6 +36,7 @@ class CityRepository extends BaseRepository implements CityRepositoryInterface
 
     public function update($city, $data)
     {
-        // TODO: Implement update() method.
+        $city->name = $data['name'];
+        $city->save();
     }
 }

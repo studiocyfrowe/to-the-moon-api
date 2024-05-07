@@ -2,7 +2,7 @@
 
 namespace App\Services\Interfaces;
 
-interface GetCityCoordinatesServiceInterface
+interface GetCoordinatesServiceInterface
 {
     public function index($query);
 }

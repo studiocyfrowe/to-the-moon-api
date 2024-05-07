@@ -66,6 +66,8 @@ Route::group([
 //    'middleware' => 'auth:api',
     'prefix' => 'cities'
 ], function ($router) {
+    Route::get('/getAll',  [\App\Http\Controllers\CityController::class, 'index']);
+    Route::get('/single/{city}',  [\App\Http\Controllers\CityController::class, 'show']);
     Route::post('/store',  [\App\Http\Controllers\CityController::class, 'store']);
 });
 
