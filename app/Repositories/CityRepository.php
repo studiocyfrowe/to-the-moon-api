@@ -5,8 +5,18 @@ namespace App\Repositories;
 use App\Models\City;
 use App\Repositories\Interfaces\CityRepositoryInterface;
 
-class CityRepository implements CityRepositoryInterface
+class CityRepository extends BaseRepository implements CityRepositoryInterface
 {
+    public function checkIfExists($data)
+    {
+        // TODO: Implement checkIfExists() method.
+    }
+
+    public function searchData($data)
+    {
+        // TODO: Implement searchData() method.
+    }
+
     public function index()
     {
         return City::with('cinemas')->get();
@@ -16,9 +26,10 @@ class CityRepository implements CityRepositoryInterface
     {
         $city = new City();
 
-        $city->name = $data->name;
-        $city->lat = $data->lat;
-        $city->lng = $data->lng;
+        $city->name = $data['name'];
+        $city->display_name = $data['display_name'];
+        $city->lat = $data['lat'];
+        $city->lng = $data['lon'];
 
         $city->save();
     }
@@ -26,10 +37,5 @@ class CityRepository implements CityRepositoryInterface
     public function update($city, $data)
     {
         // TODO: Implement update() method.
-    }
-
-    public function remove($city)
-    {
-        // TODO: Implement remove() method.
     }
 }

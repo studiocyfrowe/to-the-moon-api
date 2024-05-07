@@ -6,14 +6,19 @@ use App\Models\City;
 use App\Http\Requests\StoreCityRequest;
 use App\Http\Requests\UpdateCityRequest;
 use App\Repositories\CityRepository;
+use App\Services\GetCityCoordinatesService;
+use Illuminate\Support\Facades\Http;
 
 class CityController extends Controller
 {
-    public CityRepository $cityRepository;
+    protected CityRepository $cityRepository;
+    protected GetCityCoordinatesService $cityCoordinatesService;
 
-    public function __construct(CityRepository $cityRepository)
+    public function __construct(CityRepository $cityRepository,
+                                GetCityCoordinatesService $cityCoordinatesService)
     {
         $this->cityRepository = $cityRepository;
+        $this->cityCoordinatesService = $cityCoordinatesService;
     }
 
     /**
@@ -29,21 +34,15 @@ class CityController extends Controller
      */
     public function store(StoreCityRequest $request)
     {
-        $this->cityRepository->store($request);
+        $name = $request->query('name');
+        $city_result = $this->cityCoordinatesService->index($name);
+        $this->cityRepository->store($city_result);
     }
 
     /**
      * Display the specified resource.
      */
     public function show(City $city)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(City $city)
     {
         //
     }

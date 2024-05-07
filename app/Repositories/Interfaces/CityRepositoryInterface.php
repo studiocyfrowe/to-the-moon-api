@@ -9,6 +9,4 @@ interface CityRepositoryInterface
     public function store($data);
 
     public function update($city, $data);
-
-    public function remove($city);
 }

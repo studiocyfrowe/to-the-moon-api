@@ -64,6 +64,13 @@ Route::group([
 
 Route::group([
 //    'middleware' => 'auth:api',
+    'prefix' => 'cities'
+], function ($router) {
+    Route::post('/store',  [\App\Http\Controllers\CityController::class, 'store']);
+});
+
+Route::group([
+//    'middleware' => 'auth:api',
     'prefix' => 'cinema/types'
 ], function ($router) {
     Route::get('/getAll',  [\App\Http\Controllers\CinemaTypeController::class, 'index']);

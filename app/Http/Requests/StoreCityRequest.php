@@ -22,9 +22,7 @@ class StoreCityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'string|required',
-            'lat' => 'required',
-            'lng' => 'required'
+            'name' => 'string|required'
         ];
     }
 }
