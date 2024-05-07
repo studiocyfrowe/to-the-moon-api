@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Observers\CinemaObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,5 +18,12 @@ class Cinema extends Model
     public function cinemaType()
     {
         return $this->belongsTo(CinemaType::class, 'cinema_type_id');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::observe(CinemaObserver::class);
     }
 }

@@ -5,15 +5,26 @@ namespace App\Http\Controllers;
 use App\Models\Cinema;
 use App\Http\Requests\StoreCinemaRequest;
 use App\Http\Requests\UpdateCinemaRequest;
+use App\Repositories\CinemaRepository;
+use App\Traits\ResponseDataTrait;
 
 class CinemaController extends Controller
 {
+    use ResponseDataTrait;
+    protected CinemaRepository $cinemaRepository;
+
+    public function __construct(CinemaRepository $cinemaRepository)
+    {
+        $this->cinemaRepository = $cinemaRepository;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $res = $this->cinemaRepository->index();
+        return $this->getData($res);
     }
 
     /**
@@ -21,7 +32,7 @@ class CinemaController extends Controller
      */
     public function store(StoreCinemaRequest $request)
     {
-        //
+
     }
 
     /**

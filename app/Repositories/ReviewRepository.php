@@ -2,23 +2,24 @@
 
 namespace App\Repositories;
 
+use App\Models\Review;
 use App\Repositories\Interfaces\ReviewRepositoryInterface;
 
 class ReviewRepository extends BaseRepository implements ReviewRepositoryInterface
 {
     public function checkIfExists($data)
     {
-        // TODO: Implement checkIfExists() method.
+        return Review::where('id', '=', $data)->exists();
     }
 
     public function searchData($data)
     {
-        // TODO: Implement searchData() method.
+        return Review::where('id', '=', $data)->with('user')->exists();
     }
 
     public function getAll()
     {
-        // TODO: Implement getAll() method.
+        return Review::with('user')->get();
     }
 
     public function create($data)
