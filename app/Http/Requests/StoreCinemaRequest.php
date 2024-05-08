@@ -11,7 +11,7 @@ class StoreCinemaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class StoreCinemaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'string|required|min:3',
+            'description' => 'string|required|min:3',
+            'phone_number' => 'string|required|min:3',
+            'email_address' => 'string|required|min:3',
+            'location_address' => 'string|required|min:3'
         ];
     }
 }

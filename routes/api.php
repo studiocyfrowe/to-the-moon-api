@@ -60,6 +60,8 @@ Route::group([
     'prefix' => 'cinemas'
 ], function ($router) {
     Route::get('/getAll',  [\App\Http\Controllers\CinemaController::class, 'index']);
+    Route::post('/store/{cinemaType}/{city}',  [\App\Http\Controllers\CinemaController::class, 'store']);
+    Route::get('/single/{cinema}',  [\App\Http\Controllers\CinemaController::class, 'show']);
 });
 
 Route::group([
@@ -96,5 +98,7 @@ Route::group([
     Route::get('/get/user', [\App\Http\Controllers\PostController::class, 'indexOfUser']);
     Route::get('/statuses', [\App\Http\Controllers\PostStatusController::class, 'index']);
 });
+
+Route::post('/test', [\App\Http\Controllers\TestController::class, 'store']);
 
 

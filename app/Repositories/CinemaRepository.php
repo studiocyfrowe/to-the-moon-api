@@ -31,6 +31,7 @@ class CinemaRepository extends BaseRepository implements CinemaRepositoryInterfa
         $cinema->phone_number = $data->phone_number;
         $cinema->email_address = $data->email_address;
         $cinema->website_address = $data->website_address;
+        $cinema->location_address = $data->location_address;
         $cinema->city_id = $city->id;
         $cinema->cinema_type_id = $cinemaType->id;
 
