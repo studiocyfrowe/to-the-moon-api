@@ -66,6 +66,25 @@ Route::group([
 
 Route::group([
 //    'middleware' => 'auth:api',
+    'prefix' => 'reviews'
+], function ($router) {
+    Route::get('/getOfMovie/{movie}',  [\App\Http\Controllers\ReviewController::class, 'index']);
+    Route::post('/store/{movie}',  [\App\Http\Controllers\ReviewController::class, 'store']);
+    Route::get('/single/{review}',  [\App\Http\Controllers\ReviewController::class, 'show']);
+});
+
+Route::group([
+//    'middleware' => 'auth:api',
+    'prefix' => 'movies'
+], function ($router) {
+    Route::get('/getAll',  [\App\Http\Controllers\MovieController::class, 'index']);
+    Route::post('/create',  [\App\Http\Controllers\MovieController::class, 'store']);
+    Route::post('/attach/{movie}/{cinema}',  [\App\Http\Controllers\MovieController::class, 'attachMovieToCinema']);
+    Route::get('/single/{cinema}',  [\App\Http\Controllers\MovieController::class, 'show']);
+});
+
+Route::group([
+//    'middleware' => 'auth:api',
     'prefix' => 'cities'
 ], function ($router) {
     Route::get('/getAll',  [\App\Http\Controllers\CityController::class, 'index']);

@@ -15,18 +15,27 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
     public function searchData($data)
     {
         return Movie::where('id', '=', $data)->with([
-            'reviews', 'cinema'
+            'reviews', 'cinemas'
         ])->first();
     }
 
     public function index()
     {
-        // TODO: Implement index() method.
+        return Movie::with([
+            'reviews', 'cinemas'
+        ])->get();
     }
 
-    public function store()
+    public function store($data)
     {
-        // TODO: Implement store() method.
+        $movie = new Movie();
+
+        $movie->title = $data->title;
+        $movie->director = $data->director;
+        $movie->year_release = $data->year_release;
+        $movie->description = $data->description;
+
+        $movie->save();
     }
 
     public function update()

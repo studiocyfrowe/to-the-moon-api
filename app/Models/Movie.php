@@ -13,4 +13,9 @@ class Movie extends Model
     {
         return $this->hasMany(Review::class);
     }
+
+    public function cinemas()
+    {
+        return $this->belongsToMany(Cinema::class);
+    }
 }

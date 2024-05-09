@@ -20,6 +20,11 @@ class Cinema extends Model
         return $this->belongsTo(CinemaType::class, 'cinema_type_id');
     }
 
+    public function movies()
+    {
+        return $this->belongsToMany(Movie::class);
+    }
+
     protected static function boot()
     {
         parent::boot();

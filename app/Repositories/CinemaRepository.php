@@ -14,12 +14,12 @@ class CinemaRepository extends BaseRepository implements CinemaRepositoryInterfa
 
     public function searchData($data)
     {
-        return Cinema::where('id', '=', $data)->with(['cinemaType', 'city'])->first();
+        return Cinema::where('id', '=', $data)->with(['cinemaType', 'city', 'movies'])->first();
     }
 
     public function index()
     {
-        return Cinema::with(['cinemaType', 'city'])->get();
+        return Cinema::with(['cinemaType', 'city', 'movies'])->get();
     }
 
     public function store($data, $cinemaType, $city)

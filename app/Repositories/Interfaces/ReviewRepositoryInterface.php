@@ -4,9 +4,9 @@ namespace App\Repositories\Interfaces;
 
 interface ReviewRepositoryInterface
 {
-    public function getAll();
+    public function getReviewsOfMovie($movie);
 
-    public function create($data);
+    public function create($data, $movie);
 
     public function edit($review, $data);
 }

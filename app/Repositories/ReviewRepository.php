@@ -14,17 +14,23 @@ class ReviewRepository extends BaseRepository implements ReviewRepositoryInterfa
 
     public function searchData($data)
     {
-        return Review::where('id', '=', $data)->with('user')->exists();
+        return Review::where('id', '=', $data)->with('movie')->exists();
     }
 
-    public function getAll()
+    public function getReviewsOfMovie($movie)
     {
-        return Review::with('user')->get();
+        return Review::where('movie_id', '=', $movie)->with('movie')->get();
     }
 
-    public function create($data)
+    public function create($data, $movie)
     {
-        // TODO: Implement create() method.
+        $review = new Review();
+
+        $review->review_content = $data->review_content;
+        $review->rate = $data->rate;
+        $review->movie_id = $movie->id;
+
+        $review->save();
     }
 
     public function edit($review, $data)
