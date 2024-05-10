@@ -4,9 +4,11 @@ namespace App\Repositories;
 
 use App\Models\Review;
 use App\Repositories\Interfaces\ReviewRepositoryInterface;
+use App\Traits\GetAuthIdTrait;
 
 class ReviewRepository extends BaseRepository implements ReviewRepositoryInterface
 {
+    use GetAuthIdTrait;
     public function checkIfExists($data)
     {
         return Review::where('id', '=', $data)->exists();
@@ -29,6 +31,7 @@ class ReviewRepository extends BaseRepository implements ReviewRepositoryInterfa
         $review->review_content = $data->review_content;
         $review->rate = $data->rate;
         $review->movie_id = $movie->id;
+        $review->user_id = $this->getUserId();
 
         $review->save();
     }

@@ -4,7 +4,7 @@ namespace App\Repositories\Interfaces;
 
 interface PostRepositoryInterface
 {
-    public function store($data, $status);
+    public function store($data, $status, $movie);
 
     public function update($post, $data);
 

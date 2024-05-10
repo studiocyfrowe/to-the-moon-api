@@ -18,6 +18,7 @@ return new class extends Migration
             $table->longText('body_text');
             $table->integer('post_status_id');
             $table->integer('user_id');
+            $table->integer('movie_id');
             $table->timestamps();
         });
     }

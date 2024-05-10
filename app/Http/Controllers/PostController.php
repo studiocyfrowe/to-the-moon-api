@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enum\ResponseMessagesEnum;
 use App\Enum\ResponseStatusEnum;
+use App\Models\Movie;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
@@ -45,10 +46,10 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePostRequest $request)
+    public function store(StorePostRequest $request, Movie $movie)
     {
         $status = $this->postStatusService->setPostStatusDefault();
-        $this->postRepository->store($request, $status->id);
+        $this->postRepository->store($request, $status->id, $movie);
     }
 
     /**
