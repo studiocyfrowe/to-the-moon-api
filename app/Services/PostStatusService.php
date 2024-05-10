@@ -3,11 +3,13 @@
 namespace App\Services;
 
 use App\Enum\PostStatusEnum;
+use App\Enum\ResponseMessagesEnum;
 use App\Models\PostStatus;
 use App\Repositories\GetPostsRepository;
 use App\Repositories\PostRepository;
 use App\Repositories\PostStatusRepository;
 use App\Services\Interfaces\PostStatusServiceInterface;
+use Illuminate\Support\Facades\DB;
 
 class PostStatusService implements PostStatusServiceInterface
 {
@@ -36,7 +38,9 @@ class PostStatusService implements PostStatusServiceInterface
 
     public function setPostStatusDefault()
     {
-        return PostStatus::latest('id')->first();
+        return DB::table('post_statuses')
+            ->where('name', '=', PostStatusEnum::DRAFT)
+            ->first();
     }
 
     public function changeStatus($post, $postStatus)

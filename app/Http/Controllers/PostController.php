@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\ResponseMessagesEnum;
+use App\Enum\ResponseStatusEnum;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
@@ -11,11 +13,13 @@ use App\Repositories\GetPostsRepository;
 use App\Repositories\PostRepository;
 use App\Services\PostStatusService;
 use App\Traits\GetAuthIdTrait;
+use App\Traits\GetMessageTrait;
 use App\Traits\ResponseDataTrait;
+use App\Traits\ResponseStatusTrait;
 
 class PostController extends Controller
 {
-    use ResponseDataTrait, GetAuthIdTrait;
+    use ResponseDataTrait, GetAuthIdTrait, GetMessageTrait;
     public GetPostsRepository $getPostsRepository;
     public PostStatusService $postStatusService;
     public PostRepository $postRepository;
@@ -35,7 +39,7 @@ class PostController extends Controller
     public function indexOfUser()
     {
         $res = $this->getPostsRepository->getAllOfAuthUser();
-        return $res ? $this->getData($res) : null;
+        return $this->getData($res);
     }
 
     /**
@@ -45,8 +49,6 @@ class PostController extends Controller
     {
         $status = $this->postStatusService->setPostStatusDefault();
         $this->postRepository->store($request, $status->id);
-
-        return response()->json('Success', 200);
     }
 
     /**
@@ -54,8 +56,14 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        $res = $this->getPostsRepository->getPostDetails($post);
-        return response()->json($res, 200);
+        if ($this->postRepository->checkIfExists($post->id)) {
+            $res = $this->getPostsRepository->getPostDetails($post);
+            return $res ? $this->getData($res) : $this->responseMessage(ResponseMessagesEnum::NOT_FOUND,
+                ResponseStatusEnum::NOT_FOUND);
+        } else {
+            return $this->responseMessage(ResponseMessagesEnum::NOT_FOUND,
+                ResponseStatusEnum::NOT_FOUND);
+        }
     }
 
     public function changeStatus(Post $post, PostStatus $postStatus)
@@ -68,8 +76,12 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        $res = $this->postRepository->update($request, $post);
-        return response($res, 200);
+        if ($this->postRepository->checkIfExists($post->id)) {
+            $this->postRepository->update($request, $post->id);
+        } else {
+            return $this->responseMessage(ResponseMessagesEnum::NOT_FOUND,
+                ResponseStatusEnum::NOT_FOUND);
+        }
     }
 
     /**

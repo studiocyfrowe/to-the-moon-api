@@ -5,6 +5,8 @@ namespace App\Enum;
 
 enum ResponseMessagesEnum : string
 {
+    case SUCCESS = 'SUCCESS';
+
     case ERROR = 'ERROR';
     case NOT_FOUND = 'NOT FOUND';
     case EMPTY = 'EMPTY';
