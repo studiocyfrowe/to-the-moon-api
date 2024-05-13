@@ -2,58 +2,52 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\ResponseMessagesEnum;
+use App\Enum\ResponseStatusEnum;
 use App\Models\Favorite;
 use App\Http\Requests\StoreFavoriteRequest;
 use App\Http\Requests\UpdateFavoriteRequest;
+use App\Models\Movie;
+use App\Repositories\FavoriteRepository;
+use App\Repositories\MovieRepository;
+use App\Traits\GetAuthIdTrait;
+use App\Traits\GetMessageTrait;
+use App\Traits\ResponseDataTrait;
 
 class FavoriteController extends Controller
 {
+    use ResponseDataTrait, GetAuthIdTrait, GetMessageTrait;
+    protected FavoriteRepository $favoriteRepository;
+
+    protected MovieRepository $movieRepository;
+
+    public function __construct(FavoriteRepository $favoriteRepository,
+                                MovieRepository $movieRepository)
+    {
+        $this->favoriteRepository = $favoriteRepository;
+        $this->movieRepository = $movieRepository;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $res = $this->favoriteRepository->index($this->getUserId());
+        return $this->getData($res);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreFavoriteRequest $request)
+    public function store(Movie $movie)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Favorite $favorite)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Favorite $favorite)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateFavoriteRequest $request, Favorite $favorite)
-    {
-        //
+        if ($this->movieRepository->checkIfExists($movie->id)) {
+            $this->favoriteRepository->create($movie);
+        } else {
+            return $this->responseMessage(ResponseMessagesEnum::NOT_FOUND,
+                ResponseStatusEnum::NOT_FOUND);
+        }
     }
 
     /**

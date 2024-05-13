@@ -9,17 +9,21 @@ class CinemaRepository extends BaseRepository implements CinemaRepositoryInterfa
 {
     public function checkIfExists($data)
     {
-        return Cinema::where('id', '=', $data)->exists();
+        return Cinema::where('id', '=', $data)
+            ->exists();
     }
 
     public function searchData($data)
     {
-        return Cinema::where('id', '=', $data)->with(['cinemaType', 'city', 'movies'])->first();
+        return Cinema::where('id', '=', $data)
+            ->with(['cinemaType', 'city', 'movies'])
+            ->first();
     }
 
     public function index()
     {
-        return Cinema::with(['cinemaType', 'city', 'movies'])->get();
+        return Cinema::with(['cinemaType', 'city', 'movies'])
+            ->get();
     }
 
     public function store($data, $cinemaType, $city)
@@ -41,5 +45,18 @@ class CinemaRepository extends BaseRepository implements CinemaRepositoryInterfa
     public function update($cinema, $data)
     {
         // TODO: Implement update() method.
+    }
+
+    public function getTopRatedCinema()
+    {
+        // TODO: Implement getTopRatedCinema() method.
+    }
+
+    public function getRandomCinemaLimit($limit)
+    {
+        return Cinema::with(['cinemaType', 'city', 'movies'])
+            ->inRandomOrder()
+            ->limit($limit)
+            ->get();
     }
 }

@@ -41,6 +41,12 @@ class CinemaController extends Controller
         return $this->getData($res);
     }
 
+    public function getRandomCinemas()
+    {
+        $res = $this->cinemaRepository->getRandomCinemaLimit(5);
+        return $this->getData($res);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

@@ -8,6 +8,20 @@ Route::post('/login', [\App\Http\Controllers\Auth\AuthenticatedUserController::c
 Route::post('/register', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'store']);
 
 Route::group([
+    'middleware' => [
+        'auth:api', 'role:admin'
+    ],
+    'prefix' => 'admin'
+], function ($router) {
+    Route::post('/movies/create',  [\App\Http\Controllers\MovieController::class, 'store']);
+    Route::post('/movies/attach/{movie}/{cinema}',  [\App\Http\Controllers\MovieController::class, 'attachMovieToCinema']);
+    Route::post('/cities/store',  [\App\Http\Controllers\CityController::class, 'store']);
+    Route::post('/cinema/types/store', [\App\Http\Controllers\CinemaTypeController::class, 'store']);
+    Route::delete('/cinema/types/remove/{cinemaType}', [\App\Http\Controllers\CinemaTypeController::class, 'destroy']);
+    Route::post('/post/status/new', [\App\Http\Controllers\PostStatusController::class, 'store']);
+});
+
+Route::group([
     'middleware' => 'auth:api',
     'prefix' => 'users'
 ], function ($router) {
@@ -37,7 +51,6 @@ Route::group([
     'prefix' => 'posts'
 ], function ($router) {
     Route::get('/statuses', [\App\Http\Controllers\PostStatusController::class, 'index']);
-    Route::post('/status/new', [\App\Http\Controllers\PostStatusController::class, 'store']);
     Route::post('/update/{post}', [\App\Http\Controllers\PostController::class, 'update']);
     Route::get('/getAll', [\App\Http\Controllers\PostController::class, 'indexOfUser']);
     Route::post('/details/{post}', [\App\Http\Controllers\PostController::class, 'show']);
@@ -49,6 +62,7 @@ Route::group([
     'prefix' => 'cinemas'
 ], function ($router) {
     Route::get('/getAll',  [\App\Http\Controllers\CinemaController::class, 'index']);
+    Route::get('/getRandomCinemas',  [\App\Http\Controllers\CinemaController::class, 'getRandomCinemas']);
 });
 
 Route::group([
@@ -57,6 +71,14 @@ Route::group([
 ], function ($router) {
     Route::post('/store/{cinemaType}/{city}',  [\App\Http\Controllers\CinemaController::class, 'store']);
     Route::get('/single/{cinema}',  [\App\Http\Controllers\CinemaController::class, 'show']);
+});
+
+Route::group([
+    'middleware' => 'auth:api',
+    'prefix' => 'favorites'
+], function ($router) {
+    Route::get('/getAll',  [\App\Http\Controllers\FavoriteController::class, 'index']);
+    Route::post('/add/movie/{movie}',  [\App\Http\Controllers\FavoriteController::class, 'store']);
 });
 
 Route::group([
@@ -83,8 +105,6 @@ Route::group([
     'middleware' => 'auth:api',
     'prefix' => 'movies'
 ], function ($router) {
-    Route::post('/create',  [\App\Http\Controllers\MovieController::class, 'store']);
-    Route::post('/attach/{movie}/{cinema}',  [\App\Http\Controllers\MovieController::class, 'attachMovieToCinema']);
     Route::get('/single/{cinema}',  [\App\Http\Controllers\MovieController::class, 'show']);
 });
 
@@ -96,25 +116,10 @@ Route::group([
 });
 
 Route::group([
-    'middleware' => 'auth:api',
-    'prefix' => 'cities'
-], function ($router) {
-    Route::post('/store',  [\App\Http\Controllers\CityController::class, 'store']);
-});
-
-Route::group([
     'prefix' => 'cinema/types'
 ], function ($router) {
     Route::get('/getAll',  [\App\Http\Controllers\CinemaTypeController::class, 'index']);
     Route::get('/single/{cinemaType}',  [\App\Http\Controllers\CinemaTypeController::class, 'show']);
-});
-
-Route::group([
-    'middleware' => 'auth:api',
-    'prefix' => 'cinema/types'
-], function ($router) {
-    Route::post('/store', [\App\Http\Controllers\CinemaTypeController::class, 'store']);
-    Route::delete('/remove/{cinemaType}', [\App\Http\Controllers\CinemaTypeController::class, 'destroy']);
 });
 
 Route::group([
