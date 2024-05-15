@@ -9,7 +9,7 @@ Route::post('/register', [\App\Http\Controllers\Auth\RegisteredUserController::c
 
 Route::group([
     'middleware' => [
-        'auth:api', 'role:admin'
+        'auth:api'
     ],
     'prefix' => 'admin'
 ], function ($router) {
@@ -19,6 +19,7 @@ Route::group([
     Route::post('/cinema/types/store', [\App\Http\Controllers\CinemaTypeController::class, 'store']);
     Route::delete('/cinema/types/remove/{cinemaType}', [\App\Http\Controllers\CinemaTypeController::class, 'destroy']);
     Route::post('/post/status/new', [\App\Http\Controllers\PostStatusController::class, 'store']);
+    Route::post('/cinemas/store/{cinemaType}/{city}',  [\App\Http\Controllers\CinemaController::class, 'store']);
 });
 
 Route::group([
@@ -69,7 +70,6 @@ Route::group([
     'middleware' => 'auth:api',
     'prefix' => 'cinemas'
 ], function ($router) {
-    Route::post('/store/{cinemaType}/{city}',  [\App\Http\Controllers\CinemaController::class, 'store']);
     Route::get('/single/{cinema}',  [\App\Http\Controllers\CinemaController::class, 'show']);
 });
 
@@ -79,6 +79,7 @@ Route::group([
 ], function ($router) {
     Route::get('/getAll',  [\App\Http\Controllers\FavoriteController::class, 'index']);
     Route::post('/add/movie/{movie}',  [\App\Http\Controllers\FavoriteController::class, 'store']);
+    Route::delete('/remove/favorite/{favorite}', [\App\Http\Controllers\FavoriteController::class, 'destroy']);
 });
 
 Route::group([

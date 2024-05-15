@@ -55,6 +55,11 @@ class FavoriteController extends Controller
      */
     public function destroy(Favorite $favorite)
     {
-        //
+        if ($this->favoriteRepository->checkIfExists($favorite->id)) {
+            $favorite->delete();
+        } else {
+            return $this->responseMessage(ResponseMessagesEnum::NOT_FOUND,
+                ResponseStatusEnum::NOT_FOUND);
+        }
     }
 }

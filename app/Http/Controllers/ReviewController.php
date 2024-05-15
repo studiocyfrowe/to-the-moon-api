@@ -67,19 +67,17 @@ class ReviewController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateReviewRequest $request, Review $review)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Review $review)
     {
-        //
+        if ($this->reviewRepository->checkIfExists($review->id)) {
+            $review->delete();
+        } else {
+            return $this->responseMessage(ResponseMessagesEnum::NOT_FOUND,
+                ResponseStatusEnum::NOT_FOUND);
+        }
     }
 }

@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Models\Favorite;
 use App\Repositories\Interfaces\FavoriteRepositoryInterface;
 
-class FavoriteRepository implements FavoriteRepositoryInterface
+class FavoriteRepository extends BaseRepository implements FavoriteRepositoryInterface
 {
     public function index($user)
     {
@@ -25,5 +25,15 @@ class FavoriteRepository implements FavoriteRepositoryInterface
     public function remove()
     {
         // TODO: Implement remove() method.
+    }
+
+    public function checkIfExists($data)
+    {
+        return Favorite::where('id', '=', $data)->exists();
+    }
+
+    public function searchData($data)
+    {
+        // TODO: Implement searchData() method.
     }
 }
