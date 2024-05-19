@@ -53,7 +53,8 @@ Route::group([
 ], function ($router) {
     Route::get('/statuses', [\App\Http\Controllers\PostStatusController::class, 'index']);
     Route::post('/update/{post}', [\App\Http\Controllers\PostController::class, 'update']);
-    Route::get('/getAll', [\App\Http\Controllers\PostController::class, 'indexOfUser']);
+    Route::get('/getUser', [\App\Http\Controllers\PostController::class, 'indexOfUser']);
+    Route::get('/getAll', [\App\Http\Controllers\PostController::class, 'index']);
     Route::post('/details/{post}', [\App\Http\Controllers\PostController::class, 'show']);
     Route::get('/change/status/{post}/{status}', [\App\Http\Controllers\PostController::class, 'changeStatus']);
     Route::post('/new/{movie}', [\App\Http\Controllers\PostController::class, 'store']);

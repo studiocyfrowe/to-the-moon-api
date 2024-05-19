@@ -33,6 +33,11 @@ class PostController extends Controller
         $this->postStatusService = $postStatusService;
         $this->postRepository = $postRepository;
     }
+    public function index()
+    {
+        $res = $this->getPostsRepository->getAllPosts();
+        return $this->getData($res);
+    }
 
     /**
      * Display a listing of the resource.
