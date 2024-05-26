@@ -31,10 +31,14 @@ class FollowRepository implements FollowRepositoryInterface
     public function followUser($authUser, $user)
     {
         $follow = new Follow();
-
-        $follow->user_following_id = $authUser->id;
+        $follow->user_following_id = $authUser;
         $follow->user_followed_id = $user->id;
-
         $follow->save();
+    }
+
+    public function unFollowUser($user)
+    {
+        $follow = Follow::where('user_followed_id', '=', $user->id)->first();
+        $follow->delete();
     }
 }

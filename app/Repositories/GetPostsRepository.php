@@ -13,14 +13,14 @@ class GetPostsRepository implements GetPostsRepositoryInterface
     public function getAllPosts()
     {
         return Post::with([
-                'user', 'postStatus'
+                'user', 'postStatus', 'movie'
             ])->get();
     }
     public function getAllOfAuthUser()
     {
         return Post::where('user_id', '=', $this->getUserId())
             ->with([
-                'user', 'postStatus'
+                'user', 'postStatus', 'movie'
             ])->get();
     }
 

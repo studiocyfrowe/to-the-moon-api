@@ -38,7 +38,6 @@ class PostRepository extends BaseRepository implements PostRepositoryInterface
         $post = new Post();
 
         $post->title = $data->title;
-        $post->the_excerpt = $data->the_excerpt;
         $post->body_text = $data->body_text;
         $post->post_status_id = $status;
         $post->movie_id = $movie->id;

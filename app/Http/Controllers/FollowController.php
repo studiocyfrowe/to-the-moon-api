@@ -8,12 +8,13 @@ use App\Models\User;
 use App\Repositories\FollowRepository;
 use App\Repositories\UserSearchRepository;
 use App\Services\FollowService;
+use App\Traits\GetAuthIdTrait;
 use App\Traits\GetMessageTrait;
 use Illuminate\Http\Request;
 
 class FollowController extends Controller
 {
-    use GetMessageTrait;
+    use GetMessageTrait, GetAuthIdTrait;
     public FollowService $followService;
     public UserSearchRepository $userSearchRepository;
     public FollowRepository $followRepository;
@@ -30,16 +31,13 @@ class FollowController extends Controller
     public function getFollowUser(User $user)
     {
         $checkFollow = $this->followRepository->checkIfFollowExists($user);
-
-        $followed = $this->userSearchRepository->searchUserById($user);
-
-        if (auth()->user()->id == $user->id) {
+        if ($this->getUserId() == $user->id) {
             $this->responseMessage('You cannot follow yourself',
                 ResponseStatusEnum::BAD_REQUEST);
         }
 
         if (!$checkFollow) {
-            $this->followService->followUser($followed);
+            $this->followRepository->followUser($this->getUserId(), $user);
         } else {
             $this->responseMessage('User is already followed',
                 ResponseStatusEnum::BAD_REQUEST);
@@ -48,9 +46,9 @@ class FollowController extends Controller
 
     public function getUnFollowUser(User $user)
     {
-        $followed = $this->userSearchRepository->searchUserById($user);
-        if ($followed) {
-            $this->followService->unFollowUser($followed);
+        $checkFollow = $this->followRepository->checkIfFollowExists($user);
+        if (!$checkFollow) {
+            $this->followRepository->unFollowUser($user);
         } else {
             $this->responseMessage('User not found',
                 ResponseStatusEnum::BAD_REQUEST);
